@@ -1,61 +1,29 @@
-// import { readFileSync } from 'fs';
-// import * as yaml from 'js-yaml';
-// import { join } from 'path';
+import { readFileSync } from 'fs';
+import * as yaml from 'js-yaml';
+import { join } from 'path';
 
-// interface Config {
-//     server: {
-//         port: number;
-//     };
-//     database: {
-//         type: string;
-//         host: string;
-//         port: number;
-//         username: string;
-//         password: string;
-//         database: string;
-//         synchronize: boolean;
-//     };
-// }
-
-// const CONFIG_FILE = 'config.yml';
-
-// export default () => {
-//     console.log(join(__dirname, CONFIG_FILE), 'utf8');
-//     const config = yaml.load(
-//         readFileSync(join(__dirname, CONFIG_FILE), 'utf8'),
-//     ) as Config;
-//     console.log(config);
-//     return config;
-// };
-
-import { Command, CommandRunner, Option } from 'nest-commander';
-
-interface BasicCommandOptions {
-    string?: string;
-    boolean?: boolean;
-    number?: number;
+interface Config {
+    server: {
+        port: number;
+    };
+    database: {
+        type: string;
+        host: string;
+        port: number;
+        username: string;
+        password: string;
+        database: string;
+        synchronize: boolean;
+    };
 }
 
-@Command({ name: 'commander', description: '' })
-export default class Commander extends CommandRunner {
-    constructor() {
-        super();
-    }
+const CONFIG_FILE = 'config.yml';
 
-    async run(
-        passedParams: string[],
-        options?: BasicCommandOptions,
-    ): Promise<void> {
-        console.log(passedParams);
-        console.log(options);
-    }
+export default (path?: string) => {
+    const directoryPath = process.env.NODE_ENV === 'prod' ? path : `${__dirname}/../..`;
+    const config = yaml.load(
+        readFileSync(join(directoryPath, CONFIG_FILE), 'utf8'),
+    ) as Config;
 
-    @Option({
-        flags: '-c, --config [path]',
-        description: 'Get config yml',
-    })
-    getConfig(value: string): number {
-        console.log(value);
-        return Number(value);
-    }
-}
+    return config;
+};
