@@ -1,8 +1,13 @@
+server:
+  port: 3000
+
 database:
-  type: 'postgres'
   host: 'localhost'
   port: 5432
-  username: 'username'
-  password: 'password'
+  username: 'koy'
+  password: ''
   database: 'koy-chat'
-  synchronize: true
+
+google:
+  clientId: 'oauth'
+  secret: 'secret'

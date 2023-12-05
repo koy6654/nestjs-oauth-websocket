@@ -3,16 +3,14 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Command, CommandRunner, Option } from 'nest-commander';
 import { ChatModule } from 'src/chat/chat.module';
-import { UserService } from './user/user.service';
-import { UserController } from './user/user.controller';
-import { UserModule } from './user/user.module';
 import configUtil from './utils/config';
+import { UserModule } from './user/user.module';
 
 interface BasicCommandOptions {
     path?: string;
 }
 
-@Command({ name: 'koy-chat commander', providers: [UserService], controllers: [UserController], imports: [UserModule] })
+@Command({ name: 'koy-chat commander' })
 class Commander extends CommandRunner {
     constructor() {
         super();
@@ -67,8 +65,8 @@ class Commander extends CommandRunner {
             }),
             inject: [ConfigService],
         }),
-
         ChatModule,
+        UserModule,
     ],
     providers: [Commander],
 })
