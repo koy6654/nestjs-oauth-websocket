@@ -26,7 +26,7 @@
 2. npm passport packages 설치
   npm install @nestjs/passport passport passport-google-oauth20 &&
   npm install -D @types/passport @types/passport-google-oauth20
-3. 
+3. google.strategy.ts 추가
 
 (reference: https://ksk-yun.tistory.com/8)
 

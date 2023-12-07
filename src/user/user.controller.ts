@@ -12,7 +12,7 @@ export class UserController {
     @Get('google/redirect')
     @UseGuards(AuthGuard('google'))
     async googleAuthRedirct(@Req() req: any): Promise<string> {
-        console.log(req);
+        console.log(req.user);
 
         if (!req.body) {
             return 'user_not_exist';
