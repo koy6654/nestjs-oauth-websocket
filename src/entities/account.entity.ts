@@ -11,4 +11,7 @@ export class Account {
 
     @Property({ fieldName: 'password', columnType: 'text' })
     password: string;
+
+    @Property({ fieldName: 'provider_id', columnType: 'text' })
+    providerId: string;
 }

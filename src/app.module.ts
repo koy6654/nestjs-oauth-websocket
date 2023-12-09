@@ -5,6 +5,7 @@ import { ChatModule } from 'src/chat/chat.module';
 import configUtil from './utils/config';
 import { UserModule } from './user/user.module';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
+import { PostgreSqlDriver } from '@mikro-orm/postgresql';
 
 interface BasicCommandOptions {
     path?: string;
@@ -43,13 +44,21 @@ class Commander extends CommandRunner {
         MikroOrmModule.forRootAsync({
             imports: [ConfigModule],
             inject: [ConfigService],
+            // TODO: configService not work from config.yml
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             useFactory: (configService: ConfigService) => ({
                 type: 'postgresql',
-                dbName: configService.get("database.name"),
-                host: configService.get("database.host"),
-                port: configService.get("database.port"),
-                user: configService.get("database.user"),
-                password: configService.get("database.password"),
+                driver: PostgreSqlDriver,
+                // dbName: configService.get('database.name'),
+                // host: configService.get('database.host'),
+                // port: configService.get('database.port'),
+                // user: configService.get('database.user'),
+                // password: configService.get('database.password'),
+                dbName: 'koy-chat',
+                host: 'localhost',
+                port: 5432,
+                user: 'koy',
+                password: '',
                 entities: ['./dist/entities'],
                 entitiesTs: ['./src/entities'],
             }),
