@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Command, CommandRunner, Option } from 'nest-commander';
 import { ChatModule } from 'src/chat/chat.module';
@@ -16,13 +16,15 @@ class Commander extends CommandRunner {
     constructor() {
         super();
     }
+    
+    private logger: Logger = new Logger();
 
     async run(
         passedParams: string[],
         options?: BasicCommandOptions,
     ): Promise<void> {
-        console.log(passedParams);
-        console.log(options.path);
+        this.logger.log(passedParams);
+        this.logger.log(options.path);
     }
 
     @Option({
@@ -30,7 +32,6 @@ class Commander extends CommandRunner {
         description: 'Get config yml',
     })
     getConfigPath(value: string): string {
-        console.log(value);
         return value;
     }
 }
