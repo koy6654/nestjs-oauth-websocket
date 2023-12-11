@@ -11,19 +11,17 @@ import {
 import { Server, Socket } from 'socket.io';
 
 @WebSocketGateway(8080, {
-    namespace: 'chat',
     cors: { origin: '*' },
 })
 export class ChatEventsGateway
     implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
-    constructor() {}
-
     @WebSocketServer() server: Server;
     private logger: Logger = new Logger();
 
     @SubscribeMessage('events')
     handleEvent(client: Socket, @MessageBody() data: string): string {
+        console.log(data);
         return data;
     }
 
