@@ -21,6 +21,7 @@ export class ChatEventsGateway
 
     @SubscribeMessage('events')
     handleEvent(client: Socket, @MessageBody() data: string): string {
+        // console.log(client);
         console.log(data);
         return data;
     }
