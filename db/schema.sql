@@ -6,3 +6,10 @@ CREATE TABLE account (
     password TEXT NOT NULL,
     provider_id TEXT NOT NULL
 );
+
+CREATE TABLE chat_log (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+	account_id UUID NOT NULL,
+    value TEXT NOT NULL,
+    create_time TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
