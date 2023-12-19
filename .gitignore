@@ -4,6 +4,9 @@
 
 # Config
 /config.yml
+.env
+.env.develop
+.env.prod
 
 # Logs
 logs

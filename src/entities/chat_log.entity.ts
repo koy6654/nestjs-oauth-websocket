@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 @Entity()
 export class ChatLog {
-    @PrimaryKey({ columnType: 'uuid' })
+    @PrimaryKey({ columnType: 'uuid', defaultRaw: 'gen_random_uuid()' })
     id = uuidv4();
 
     @Property({ fieldName: 'account_id', columnType: 'uuid' })

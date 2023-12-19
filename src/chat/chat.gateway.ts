@@ -17,13 +17,20 @@ import { ChatService } from './chat.service';
 export class ChatEventsGateway
     implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
-    constructor(private chatService: ChatService) {}
+    accountId: string;
+
+    constructor(private chatService: ChatService) {
+        // TODO: Need to chage redis session or JWT token
+        this.accountId = '07a06c49-4a76-55ea-b4dd-7c3c88edfe09';
+    }
+
     @WebSocketServer() server: Server;
     private logger: Logger = new Logger();
 
     @SubscribeMessage('events')
-    handleEvent(client: Socket, @MessageBody() data: string): string {
+    async handleEvent(client: Socket, @MessageBody() data: string): Promise<string> {
         // console.log(client);
+        await this.chatService.setChatLog(this.accountId, data);
         console.log(data);
         return data;
     }
@@ -33,14 +40,13 @@ export class ChatEventsGateway
         this.logger.log('Websocket server init done');
     }
 
-    handleDisconnect(client: Socket) {
-        // TODO: Need to chage redis session or JWT token
-        const accountId = '07a06c49-4a76-55ea-b4dd-7c3c88edfe09';
-        const result = this.chatService.deleteChatLog(accountId);
-        this.logger.log(`Client Disconnected : ${client.id} delete log = ${result}`);
+    async handleDisconnect(client: Socket) {
+        const result = await this.chatService.deleteChatLog(this.accountId);
+        this.logger.log(`Client Disconnected / delete log = ${result}`);
     }
 
-    handleConnection(client: Socket, ...args: any[]) {
-        this.logger.log(`Client Connected : ${client.id}`);
+    async handleConnection(client: Socket, ...args: any[]) {
+        const result = await this.chatService.deleteChatLog(this.accountId);
+        this.logger.log(`Client Connected / delete log = ${result}`);
     }
 }
