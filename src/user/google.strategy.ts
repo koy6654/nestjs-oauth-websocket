@@ -5,11 +5,10 @@ import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
-    constructor(private readonly configService: ConfigService) {
+    constructor(private readonly config: ConfigService) {
         super({
-            clientID: configService.get<string>('google.clientId'),
-            clientSecret: configService.get<string>('google.secret'),
-            callbackURL: configService.get<string>('google.redirect'),
+            clientID: process.env.GOOGLE_CLIENT_ID,
+            clientSecret: process.env.GOOGLE_SECRET,
             scope: ['email', 'profile'],
         });
     }

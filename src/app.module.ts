@@ -2,7 +2,7 @@ import { Logger, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Command, CommandRunner, Option } from 'nest-commander';
 import { ChatModule } from 'src/chat/chat.module';
-import configUtil from './utils/config';
+// import configUtil from './utils/config';
 import { UserModule } from './user/user.module';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { PostgreSqlDriver } from '@mikro-orm/postgresql';
@@ -38,28 +38,26 @@ class Commander extends CommandRunner {
 
 @Module({
     imports: [
+        // ConfigModule.forRoot({
+        //     load: [configUtil],
+        //     isGlobal: true,
+        // }),
         ConfigModule.forRoot({
-            load: [configUtil],
             isGlobal: true,
+            envFilePath: `.${process.env.NODE_ENV ?? 'development'}.env`,
         }),
         MikroOrmModule.forRootAsync({
             imports: [ConfigModule],
             inject: [ConfigService],
-            // TODO: configService not work from config.yml
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            useFactory: (configService: ConfigService) => ({
+            useFactory: () => ({
                 type: 'postgresql',
                 driver: PostgreSqlDriver,
-                // dbName: configService.get('database.name'),
-                // host: configService.get('database.host'),
-                // port: configService.get('database.port'),
-                // user: configService.get('database.user'),
-                // password: configService.get('database.password'),
-                dbName: 'koy-chat',
-                host: 'localhost',
-                port: 5432,
-                user: 'koy',
-                password: '',
+                dbName: process.env.DATABASE_DATABASE,
+                host:  process.env.DATABASE_HOST,
+                port: Number(process.env.DATABASE_PORT),
+                user: process.env.DATABASE_USERNAME,
+                password: process.env.DATABASE_PASSWORD,
                 entities: ['./dist/entities'],
                 entitiesTs: ['./src/entities'],
             }),
