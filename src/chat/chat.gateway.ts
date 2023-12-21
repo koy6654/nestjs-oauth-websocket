@@ -36,16 +36,16 @@ export class ChatEventsGateway
     }
 
     // 웹소켓 실행 후 실행됨
-    afterInit(server: Server) {
+    afterInit() {
         this.logger.log('Websocket server init done');
     }
 
-    async handleDisconnect(client: Socket) {
+    async handleDisconnect() {
         const result = await this.chatService.deleteChatLog(this.accountId);
         this.logger.log(`Client Disconnected / delete log = ${result}`);
     }
 
-    async handleConnection(client: Socket, ...args: any[]) {
+    async handleConnection() {
         const result = await this.chatService.deleteChatLog(this.accountId);
         this.logger.log(`Client Connected / delete log = ${result}`);
     }
