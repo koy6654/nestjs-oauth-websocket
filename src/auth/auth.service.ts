@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { TokenPayload } from './auth.type';
 
@@ -7,13 +6,25 @@ import { TokenPayload } from './auth.type';
 export class AuthService {
     constructor(
         private readonly jwtService: JwtService,
-        private readonly configService: ConfigService,
     ) {}
-    public getCookieWithJwtToken(userId: string) {
+
+    public getEncodeJwtToken(userId: string) {
         const payload: TokenPayload = { userId };
-        const token = this.jwtService.sign(payload);
-        return `Authentication=${token}; HttpOnly; Path=/; Max-Age=${this.configService.get(
-            'JWT_EXPIRATION_TIME',
-        )}`;
+        
+        const aceessTokenExpire = process.env.JWT_ACCESS_TOKEN_EXPIRE;
+        const accessToken = this.jwtService.sign(payload, {expiresIn: Number(aceessTokenExpire)});
+        
+        const refreshTokenExpire = process.env.JWT_REFRESH_TOKEN_EXPIRE;
+        const refreshToken = this.jwtService.sign(payload, {expiresIn: Number(refreshTokenExpire)});
+
+        return {
+            accessToken,
+            refreshToken,
+        };
+    }
+
+    public getDecodeJwtToken(token: string) {
+        const verified = this.jwtService.verify(token, {secret: process.env.JWT_SECRET});
+        console.log(verified);
     }
 }

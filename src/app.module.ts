@@ -44,10 +44,6 @@ class Commander extends CommandRunner {
         ConfigModule.forRoot({
             isGlobal: true,
             envFilePath: `.${process.env.NODE_ENV ?? 'development'}.env`,
-            validationSchema: {
-                JWT_SECRET: process.env.JWT_SECRET,
-                JWT_EXPIRATION_TIME: '30',
-            }
         }),
         MikroOrmModule.forRootAsync({
             imports: [ConfigModule],

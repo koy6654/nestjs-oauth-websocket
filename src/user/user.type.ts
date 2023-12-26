@@ -4,3 +4,12 @@ export interface GoogleRequestUser {
     name: string;
     email: string;
 }
+
+export interface GoogleRedirectResponse {
+    accessToken: string;
+    refreshToken: string;
+}
+
+export interface UserJwtDecodeBody {
+    token: string;
+}

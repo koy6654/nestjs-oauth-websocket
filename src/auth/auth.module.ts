@@ -13,12 +13,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
             inject: [ConfigService],
             useFactory: async () => ({
                 secret: process.env.JWT_SECRET,
-                signOptions: {
-                    // expiresIn: process.env.JWT_,
-                },
+                signOptions: {},
             }),
         }),
     ],
     providers: [AuthService],
+    exports: [AuthService],
 })
 export class AuthModule {}
