@@ -8,10 +8,8 @@ import { v4 as uuidv4 } from 'uuid';
 export class ChatService {
     constructor(
         @InjectRepository(ChatLog)
-        private readonly chatLogRepository: EntityRepository<ChatLog>
-    ) {
-
-    }
+        private readonly chatLogRepository: EntityRepository<ChatLog>,
+    ) {}
 
     chat(): string {
         return 'login done';
@@ -35,7 +33,9 @@ export class ChatService {
             accountId,
         };
 
-        const result = await this.chatLogRepository.nativeDelete(nativeDeleteWhereOptions);
+        const result = await this.chatLogRepository.nativeDelete(
+            nativeDeleteWhereOptions,
+        );
 
         return result;
     }

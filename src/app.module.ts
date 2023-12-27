@@ -15,7 +15,7 @@ class Commander extends CommandRunner {
     constructor() {
         super();
     }
-    
+
     private logger: Logger = new Logger();
 
     async run(
@@ -52,8 +52,8 @@ class Commander extends CommandRunner {
             useFactory: () => ({
                 type: 'postgresql',
                 driver: PostgreSqlDriver,
-                dbName: process.env.DATABASE_DATABASE,
-                host:  process.env.DATABASE_HOST,
+                dbName: process.env.DATABASE_NAME,
+                host: process.env.DATABASE_HOST,
                 port: Number(process.env.DATABASE_PORT),
                 user: process.env.DATABASE_USERNAME,
                 password: process.env.DATABASE_PASSWORD,

@@ -12,17 +12,19 @@ export class UserService {
     ) {}
 
     async getUser(googleInfo: GoogleRequestUser): Promise<Account> {
-        const {email, providerId} = googleInfo;
+        const { email, providerId } = googleInfo;
         const getUserExistWhereOptions = {
             email,
             providerId,
-        }
+        };
 
-        const user = await this.accountRepository.find(getUserExistWhereOptions);
+        const user = await this.accountRepository.find(
+            getUserExistWhereOptions,
+        );
         if (user.length !== 1) {
             throw new Error('569be1f4-bd81-5def-9b23-dec5413c5b11');
         }
-        
+
         return user[0];
     }
 }
