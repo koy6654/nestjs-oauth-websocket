@@ -1,4 +1,14 @@
-import { CanActivate, Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+    BadRequestException,
+    CanActivate,
+    ExecutionContext,
+    Inject,
+    Injectable,
+    UnauthorizedException,
+} from '@nestjs/common';
+import { RedisClientType } from 'redis';
+import { AuthService } from './auth.service';
+import { RedisService } from '../redis/redis.sevice';
 
 // import { NextFunction, Request, Response } from 'express';
 // import { MemberService } from 'src/member/member.service';
@@ -6,12 +16,32 @@ import { CanActivate, Injectable, UnauthorizedException } from '@nestjs/common';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-    // return true 일때 pass
-    canActivate() {
-        if (true) {
-          return true;
+    @Inject()
+    private authService: AuthService;
+
+    @Inject()
+    private redisService: RedisService;
+
+    @Inject('REDIS_CLIENT')
+    private redisProvider: RedisClientType;
+
+    async canActivate(context: ExecutionContext) {
+        const request = context.switchToHttp().getRequest() as Request;
+
+        const bearerToken = request.headers['authorization'];
+        if (bearerToken == null) {
+            throw new BadRequestException('invalid_token');
+        }
+
+        const token = bearerToken.substring('Bearer '.length);
+        const decodedToken = this.authService.getDecodeJwtToken(token);
+
+        const redisKey = this.redisService.getSessionKey(decodedToken.userId);
+        const verified = await this.redisProvider.get(redisKey);
+        if (verified) {
+            return true;
         } else {
-          throw new UnauthorizedException('invalid_token');
+            throw new UnauthorizedException('invalid_token');
         }
     }
 }

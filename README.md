@@ -34,7 +34,9 @@
 
 -   Chat (Websocket)
 
-1.
+1. websocket을 통해 채팅 기록 DB에 저장
+2. google oauth로 해당 고객의 1일 간 채팅로그를 불러옴
+3. 채팅 대상은 ai 사용
 
 ## Installation
 

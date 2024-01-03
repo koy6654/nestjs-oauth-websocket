@@ -4,9 +4,11 @@ import { AuthGuard } from './auth.guard';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { RedisModule } from '../redis/redis.module';
 
 @Module({
     imports: [
+        RedisModule,
         PassportModule,
         ConfigModule,
         JwtModule.registerAsync({
