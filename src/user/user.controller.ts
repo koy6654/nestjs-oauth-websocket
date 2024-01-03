@@ -1,8 +1,8 @@
-import { Controller, Get, Inject, Req, Res, UseGuards } from '@nestjs/common';
+import { Controller, Get, Inject, Req, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { UserService } from './user.service';
 import { AuthService } from '../utils/auth/auth.service';
-import { GoogleRedirectResponse, UserJwtDecodeBody } from './user.type';
+import { GoogleRedirectResponse } from './user.type';
 import { RedisClientType } from 'redis';
 
 @Controller('user')

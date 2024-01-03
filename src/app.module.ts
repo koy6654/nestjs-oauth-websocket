@@ -1,10 +1,11 @@
-import { Logger, Module } from '@nestjs/common';
+import { Logger, MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Command, CommandRunner, Option } from 'nest-commander';
-import { ChatModule } from 'src/chat/chat.module';
+import { PostgreSqlDriver } from '@mikro-orm/postgresql';
+import { ChatModule } from './chat/chat.module';
 import { UserModule } from './user/user.module';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
-import { PostgreSqlDriver } from '@mikro-orm/postgresql';
+import { LoggerMiddleware } from './utils/middleware/middleware.logger';
 
 interface BasicCommandOptions {
     path?: string;
@@ -79,4 +80,8 @@ class Commander extends CommandRunner {
     ],
     providers: [Commander],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+    configure(consumer: MiddlewareConsumer) {
+        consumer.apply(LoggerMiddleware).forRoutes('*');
+    }
+}
