@@ -7,3 +7,8 @@ export interface DecodedJwtToken {
     iat: number;
     exp: number;
 }
+
+export interface UserSession {
+    accessToken: string;
+    refreshToken: string;
+}

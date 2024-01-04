@@ -1,4 +1,4 @@
-import { Logger } from '@nestjs/common';
+import { Logger, UseGuards } from '@nestjs/common';
 import {
     MessageBody,
     OnGatewayConnection,
@@ -10,29 +10,29 @@ import {
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { ChatService } from './chat.service';
+import { AuthGuard } from '../utils/auth/auth.guard';
 
 @WebSocketGateway(8080, {
     cors: { origin: '*' },
 })
+// @UseGuards(AuthGuard)
 export class ChatEventsGateway
     implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
     accountId: string;
 
     constructor(private chatService: ChatService) {
-        // TODO: Need to chage redis session or JWT token
         this.accountId = '07a06c49-4a76-55ea-b4dd-7c3c88edfe09';
     }
 
     @WebSocketServer() server: Server;
     private logger: Logger = new Logger();
 
-    @SubscribeMessage('events')
-    async handleEvent(
+    @SubscribeMessage('/ws/chat/log')
+    async handleChatLog(
         client: Socket,
         @MessageBody() data: string,
     ): Promise<string> {
-        // console.log(client);
         await this.chatService.setChatLog(this.accountId, data);
         console.log(data);
         return data;
