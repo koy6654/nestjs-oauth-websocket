@@ -7,9 +7,9 @@ import {
     UnauthorizedException,
 } from '@nestjs/common';
 import { RedisClientType } from 'redis';
-import { AuthService } from './auth.service';
-import { RedisService } from '../redis/redis.sevice';
-import { UserSession } from './auth.type';
+import { AuthService } from '../auth.service';
+import { RedisService } from '../../redis/redis.sevice';
+import { UserSession } from '../auth.type';
 
 @Injectable()
 export class AuthGuard implements CanActivate {

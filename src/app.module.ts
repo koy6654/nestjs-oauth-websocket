@@ -38,10 +38,6 @@ class Commander extends CommandRunner {
 
 @Module({
     imports: [
-        // ConfigModule.forRoot({
-        //     load: [configUtil],
-        //     isGlobal: true,
-        // }),
         ConfigModule.forRoot({
             isGlobal: true,
             envFilePath: `.${process.env.NODE_ENV ?? 'development'}.env`,
@@ -49,7 +45,6 @@ class Commander extends CommandRunner {
         MikroOrmModule.forRootAsync({
             imports: [ConfigModule],
             inject: [ConfigService],
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             useFactory: () => ({
                 type: 'postgresql',
                 driver: PostgreSqlDriver,

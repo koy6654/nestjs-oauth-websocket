@@ -1,6 +1,6 @@
 import { Controller, Post, UseGuards } from '@nestjs/common';
 import { ChatService } from './chat.service';
-import { AuthGuard } from '../utils/auth/auth.guard';
+import { AuthGuard } from '../utils/auth/guards/auth.request.guard';
 
 @Controller('chat')
 @UseGuards(AuthGuard)

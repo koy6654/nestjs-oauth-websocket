@@ -10,12 +10,7 @@ async function koyChat() {
 
     const app = await NestFactory.create(AppModule);
 
-    // Websocket
-    app.useWebSocketAdapter(new WsAdapter(app));
-
-    // Cookie
     app.use(cookieParser());
-
     app.use(
         session({
             secret: process.env.SESSION_SECRET,
@@ -23,6 +18,9 @@ async function koyChat() {
             saveUninitialized: false,
         }),
     );
+
+    // Websocket
+    app.useWebSocketAdapter(new WsAdapter(app));
 
     const port = process.env.SERVER_PORT;
     await app.listen(port);

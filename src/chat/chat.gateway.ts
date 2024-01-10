@@ -8,14 +8,15 @@ import {
     WebSocketGateway,
     WebSocketServer,
 } from '@nestjs/websockets';
-import { Server, Socket } from 'socket.io';
+import { Server } from 'socket.io';
 import { ChatService } from './chat.service';
-import { AuthGuard } from '../utils/auth/auth.guard';
+import { WsGuard } from '../utils/auth/guards/auth.ws.guard';
+import { ChatLog } from './chat.types';
 
 @WebSocketGateway(8080, {
     cors: { origin: '*' },
 })
-// @UseGuards(AuthGuard)
+@UseGuards(WsGuard)
 export class ChatEventsGateway
     implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
@@ -28,14 +29,13 @@ export class ChatEventsGateway
     @WebSocketServer() server: Server;
     private logger: Logger = new Logger();
 
-    @SubscribeMessage('/ws/chat/log')
+    @SubscribeMessage('chat-log')
     async handleChatLog(
-        client: Socket,
-        @MessageBody() data: string,
+        @MessageBody() data: ChatLog,
     ): Promise<string> {
-        await this.chatService.setChatLog(this.accountId, data);
-        console.log(data);
-        return data;
+        const chatLog = data.data;
+        await this.chatService.setChatLog(this.accountId, chatLog);
+        return chatLog;
     }
 
     // 웹소켓 실행 후 실행됨
