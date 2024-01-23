@@ -11,7 +11,7 @@
         <button
             id="send"
             onclick="socket.send(JSON.stringify({
-              event: '/ws/chat/log',
+              event: 'chat-log',
               data: 'test',
             }))"
         >

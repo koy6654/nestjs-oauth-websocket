@@ -30,9 +30,7 @@ export class ChatEventsGateway
     private logger: Logger = new Logger();
 
     @SubscribeMessage('chat-log')
-    async handleChatLog(
-        @MessageBody() data: ChatLog,
-    ): Promise<string> {
+    async handleChatLog(@MessageBody() data: ChatLog): Promise<string> {
         const chatLog = data.data;
         await this.chatService.setChatLog(this.accountId, chatLog);
         return chatLog;
