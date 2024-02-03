@@ -22,7 +22,7 @@
 
 ## Description
 
--   Google Oauth
+-  Login (Google Oauth)
 
 1. https://console.developers.google.com/ 에서 서비스 등록
 2. npm passport packages 설치
@@ -32,11 +32,10 @@
 4. user module에 연동
    (reference: https://ksk-yun.tistory.com/8)
 
--   Chat (Websocket)
+-  Chat (Websocket)
 
 1. websocket을 통해 채팅 기록 DB에 저장
-2. google oauth로 해당 고객의 1일 간 채팅로그를 불러옴
-3. 채팅 대상은 ai 사용
+2. grpc를 통해 [kafka 프로젝트](https://github.com/koy6654/kafka)와 연동
 
 ## Installation
 
